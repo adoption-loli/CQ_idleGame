@@ -183,7 +183,7 @@ async def time_lost():
     for player in player_list:
         if player_list[player].get("place", '未出征') in ['天台', '魔都', '加载之地', '小汉堡仓库']:
             fightlist.append(player)
-    print(fightlist)
+    # print(fightlist)
     for qq_id in fightlist:
         player = p.Player(int(qq_id))
         player.attr["time"] -= 1
