@@ -191,9 +191,9 @@ async def time_lost():
             player.attr["place"] = "未出征"
             await bot.send_group_msg(group_id=player["last_group"],
                                      message=f'[CQ:at,qq={qq_id}] 时间耗尽，成功回家')
-            up_player = player.attr
-            up_player["id"] = qq_id
-            update_user(up_player)
+        up_player = player.attr
+        up_player["id"] = qq_id
+        update_user(up_player)
 
 
 def tiantai():
