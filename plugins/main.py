@@ -105,7 +105,7 @@ async def item_query(session: CommandSession):
                 msg += '    {}'.format(itemattr[attr])
                 if attr == '价格':
                     msg += '円'
-        msg += '''回复 购买 物品#物品数量 来购买物品'''
+    msg += '''\n回复 购买 物品#物品数量 来购买物品'''
     await session.send(at_sender=True, message=msg)
 
 
@@ -115,14 +115,14 @@ async def item_query(session: CommandSession):
     cmd = str(session.ctx['message']).strip()
     qq_id = session.ctx['user_id']
     player = p.Player(qq_id)
-    if (player.attr["type"] not in ['未签订', '签订中']) and (player.attr["place"] == '未出征'):
+    if (player.attr["type"] not in ['未签订', '签订中']) and (player.attr["place"] == '未出征') and (player.attr["time"] >= 0):
         player.attr["place"] = cmd
         up_player = player.attr
         up_player["id"] = qq_id
         update_user(up_player)
         msg = '''成功出征，回复 回家 可取消出征'''
     else:
-        msg = '''正在出征状态中，不能重复出征，回复 回家 可取消出征'''
+        msg = '''出征失败，回复 回家 可取消出征'''
     await session.send(at_sender=True, message=msg)
 
 
