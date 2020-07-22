@@ -10,6 +10,10 @@ from . import player as p
 import nonebot
 
 BASEDIR_JSON = os.path.join(os.path.dirname(__file__), 'json')
+PLAYER_JSON = os.path.join(BASEDIR_JSON, "玩家信息.json")
+SHOP_JSON = os.path.join(BASEDIR_JSON, "商店.json")
+REGISTER_JSON = os.path.join(BASEDIR_JSON, "注册信息.json")
+CLOCK_IN_JSON = os.path.join(BASEDIR_JSON, "签到信息.json")
 for filename in ['商店.json', '玩家信息.json', '注册信息.json', '签到信息.json']:
     aim = os.path.join(BASEDIR_JSON, filename)
     # print(aim)
@@ -120,13 +124,13 @@ async def go_fight(session: CommandSession):
         up_player = player.attr
         up_player["id"] = qq_id
         update_user(up_player)
-        msg = '''成功出征，回复 回家 可取消出征'''
+        msg = '成功出征，回复 回家 可取消出征'
     else:
-        msg = '''出征失败，回复 回家 可取消出征'''
+        msg = '出征失败，回复 回家 可取消出征'
     await session.send(at_sender=True, message=msg)
 
 
-@on_command('回家', aliases=('回来'), permission=permission.GROUP)
+@on_command('回家', aliases=('回来',), permission=permission.GROUP)
 async def back_home(session: CommandSession):
     # last_say_at(session)
     cmd = str(session.ctx['message']).strip()
@@ -137,9 +141,9 @@ async def back_home(session: CommandSession):
         up_player = player.attr
         up_player["id"] = qq_id
         update_user(up_player)
-        msg = '''回家了(*^▽^*)'''
+        msg = '回家了(*^▽^*)'
     else:
-        msg = '''有号吗你?'''
+        msg = '有号吗你?'
     await session.send(at_sender=True, message=msg)
 
 
@@ -155,7 +159,7 @@ async def fallen(session: CommandSession):
         # 没有用户则是无用户，有用户则是用户字典
         'info': users.get(str(qq_id), '无用户')
     }
-    if user['info'] == '无用户':
+    if user['info'] == '无用户' or users['info'].get('type', '未签订') in ['签订中', '未签订']:
         new_player = {
             'id': qq_id,
             'last_group': group,

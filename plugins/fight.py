@@ -1,11 +1,7 @@
-import asyncio
 import random
-import time
 import os
-import threading
 import json
 from . import player as p
-from nonebot import IntentCommand, on_command, CommandSession
 import nonebot
 
 bot = nonebot.get_bot()
@@ -188,6 +184,7 @@ async def time_lost():
         player = p.Player(int(qq_id))
         player.attr["time"] -= 1
         if player.attr["time"] <= 0:
+            player.attr["time"] = 0
             player.attr["place"] = "未出征"
             await bot.send_group_msg(group_id=player["last_group"],
                                      message=f'[CQ:at,qq={qq_id}] 时间耗尽，成功回家')
