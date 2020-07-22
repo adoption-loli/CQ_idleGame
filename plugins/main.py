@@ -31,7 +31,7 @@ async def menu(session: CommandSession):
 
 
 @on_command('出征', permission=permission.GROUP)
-async def menu(session: CommandSession):
+async def place_list(session: CommandSession):
     # last_say_at(session)
     msg = '''
 ┌─菜单
@@ -110,7 +110,7 @@ async def item_query(session: CommandSession):
 
 
 @on_command('天台', aliases=('魔都', '加载之地', '小汉堡仓库'), permission=permission.GROUP)
-async def item_query(session: CommandSession):
+async def go_fight(session: CommandSession):
     # last_say_at(session)
     cmd = str(session.ctx['message']).strip()
     qq_id = session.ctx['user_id']
@@ -127,7 +127,7 @@ async def item_query(session: CommandSession):
 
 
 @on_command('回家', aliases=('回来'), permission=permission.GROUP)
-async def item_query(session: CommandSession):
+async def back_home(session: CommandSession):
     # last_say_at(session)
     cmd = str(session.ctx['message']).strip()
     qq_id = session.ctx['user_id']
