@@ -66,7 +66,7 @@ async def state(session: CommandSession):
     msg += '''
 │契约类型：{type}
 │生命：{hp}
-│攻击：{attack}  防御:{defense}
+│攻击：{attack:.1f}  防御:{defense:.1f}
 │挂机时间：{time}  出征：{place}
 │防具：{armor}  武器：{weapon}
 │被动：{passive}  金币：{money}
@@ -288,7 +288,7 @@ async def buy(session: NLPSession):
     try:
         qq_id = session.ctx['user_id']
         num = int(num)
-        print(item, num)
+        # print(item, num)
         with open(os.path.join(BASEDIR_JSON, '商店.json'), 'r', encoding='utf-8') as shop:
             iteminfo = json.load(shop)[item]
         player = p.Player(qq_id)
@@ -296,6 +296,7 @@ async def buy(session: NLPSession):
         if iteminfo['属性'] in ['武器', '防具', '被动技能']:
             num = 1
             price = int(iteminfo['价格']) * num
+            # print('进入购买', iteminfo)
             if price > player_money:
                 await session.send(at_sender=True, message="你上哪去找这那多钱，穷鬼")
                 return
@@ -303,11 +304,17 @@ async def buy(session: NLPSession):
                 player.attr["weapon"] = item
             if iteminfo['属性'] == '防具':
                 player.attr["armor"] = item
-            if iteminfo['属性'] == '被动':
+            if iteminfo['属性'] == '被动技能':
+                # print('进入被动')
+                # print(player.attr["type"], item)
                 if player.attr["type"] == '魔法使' and item == "吟唱略过":
                     player.attr["passive"] = item
-                if player.attr["type"] == '科学使' and item == "矢量操作":
+                elif player.attr["type"] == '科学使' and item == "矢量操作":
                     player.attr["passive"] = item
+                    # print('购买被动成功')
+                else:
+                    await session.send(at_sender=True, message="狂啊，这是你能买的东西吗？")
+                    return
             player.attr["money"] -= price
             buy_player = player.attr
             buy_player["id"] = qq_id
